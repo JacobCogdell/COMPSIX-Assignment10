@@ -5,10 +5,13 @@ const { db, User, Task } = require('./database/setup');
 require('dotenv').config();
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(express.json());
+
+const cors = require('cors');
+app.use(cors());
 
 // JWT Authentication Middleware
 function requireAuth(req, res, next) {
@@ -145,7 +148,7 @@ app.post('/api/login', async (req, res) => {
         const user = await User.findOne({ where: { email } });
         if (!user) {
             return res.status(401).json({ 
-                error: 'Invalid email or password' 
+                error: 'Invalid email or password user' 
             });
         }
         
@@ -153,7 +156,7 @@ app.post('/api/login', async (req, res) => {
         const isValidPassword = await bcrypt.compare(password, user.password);
         if (!isValidPassword) {
             return res.status(401).json({ 
-                error: 'Invalid email or password' 
+                error: 'Invalid email or password passwrd' 
             });
         }
         
